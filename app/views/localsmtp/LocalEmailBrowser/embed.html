@@ -1,0 +1,12 @@
+<div class="mail-header">
+	<span class="label">Subject:</span>
+	<span class="subject">${email.meta.subject}</span><br>
+	<span class="label">From:</span>
+	<span class="from">${email.meta.from}</span><br>
+	<span class="label">To:</span>
+	<span class="to">${email.meta.to}</span><br>
+	<span class="label">Download: </span>
+	<span class="to"><a href="@{controllers.localsmtp.LocalEmailBrowser.download(email.id)}">eml file</a></span><br>
+	<br>
+</div>
+<div class="mail-body ${bodyClass}">${body.raw()}</div>

@@ -1,0 +1,66 @@
+h1. {module name}
+
+p(note). Add-on for <a href="https://www.playframework.com/documentation/1.4.x/home">Play Framework 1.x</a> (this does not work with Play 2.x series!)
+
+p(note). This addon is used to start a local smtp server when running in test/dev mode that catches all outgoing email. 
+
+p(note). In many cases your application will send out emails, for instance to notify a user that their account has been created or to notify an administrator that a serious problem occurred. With this add-on you don't have to worry about accidentally sending out lots of emails. Everything is caught, stored in the local database, and never actually sent out. 
+
+h2. Sample application
+
+p(note). TBD. 
+
+h2. Getting started
+
+p(note). The preferred way is to install this plugin locally in a subfolder of your application and have it in version control as a submodule. 
+
+h3. Install locally 
+
+First download the add-on and unpack it to @my-app/modules-local/localsmtp@.
+Then register it in @dependencies.yml@. 
+
+<pre>
+# Application dependencies
+
+require:
+    - play
+    - localsmtp -> localsmtp 0.1
+
+repositories:
+    - Local Modules:
+        type:       local
+        artifact:   ${application.path}/modules-local/[module]
+        contains:
+            - localsmtp
+</pre>
+
+For these changes to take effect you must update the depencies on the command line. 
+
+<pre>
+play dependencies --sync
+play eclipsify
+</pre>
+
+h2. Configuration
+
+h3. Mail server configuration 
+
+To activate the local smtp server all you have to do is specify @localhost@ as host, and use @localsmtp@ as both username and password. Chose a port over 1024 or you will run into permission problems on linux. 
+
+<pre>mail.smtp.host=localhost
+mail.smtp.user=localsmtp
+mail.smtp.pass=localsmtp
+mail.smtp.port=37536</pre>
+
+
+h2. Usage
+
+p(note). The advantage of this approach is the code you write to actually send the emails stays exactly the same in development and production mode, only the destination smtp server is different. 
+
+To query the emails that would have been sent visit 
+
+<pre>    http://localhost:9000/@emails</pre>
+
+h2. Tags
+
+p(note). List any tags the module provides, with an @h3.@ heading for each one. Include the tags’ arguments.

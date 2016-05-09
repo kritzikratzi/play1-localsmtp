@@ -1,0 +1,5 @@
+self: play -> localsmtp 0.1
+
+require:
+    - play
+    - org.subethamail -> subethasmtp 3.1.7

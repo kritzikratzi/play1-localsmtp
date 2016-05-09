@@ -1,0 +1,10 @@
+# This file defines all module routes (Higher priority routes first)
+#
+# import these routes in the main app as :
+# *     /                       module:localsmtp
+#
+# ~~~~
+
+# Local E-Mail
+GET		/@emails								localsmtp.LocalEmailBrowser.index
+GET		/@emails/embed/{messageId}				localsmtp.LocalEmailBrowser.show(messageId)
