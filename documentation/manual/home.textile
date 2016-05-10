@@ -1,14 +1,36 @@
-h1. {module name}
+h1. Local SMTP
 
 p(note). Add-on for <a href="https://www.playframework.com/documentation/1.4.x/home">Play Framework 1.x</a> (this does not work with Play 2.x series!)
 
-p(note). This addon is used to start a local smtp server when running in test/dev mode that catches all outgoing email. 
+This addon is used to start a local smtp server when running in test/dev mode that catches all outgoing email. It is based on on SubEthaSMTP. 
 
-p(note). In many cases your application will send out emails, for instance to notify a user that their account has been created or to notify an administrator that a serious problem occurred. With this add-on you don't have to worry about accidentally sending out lots of emails. Everything is caught, stored in the local database, and never actually sent out. 
+Similar software: 
+
+- https://mailcatcher.me/
+  Written in ruby it seems. 
+- https://mailtrap.io/
+  non-free, saas. 
+- http://smtp4dev.codeplex.com/
+  Windows only
+- http://quintanasoft.com/dumbster/
+  Java
+- https://nilhcem.github.io/FakeSMTP/
+  Java, also based on SubEthaSMTP
+
+h2. Features
+
+* Quick to set up
+* Writes to the filesystem, no database needed
+* Minimal UI
+* Download EML files to test your html mails in email clients without sending any mails and without configuring your mail client. 
+* Embedded. No external installation/configuration needed
 
 h2. Sample application
 
-p(note). TBD. 
+p(note). Not gonna happen
+
+See the play documentation on sending mails 
+https://www.playframework.com/documentation/1.4.x/emails
 
 h2. Getting started
 
@@ -19,9 +41,7 @@ h3. Install locally
 First download the add-on and unpack it to @my-app/modules-local/localsmtp@.
 Then register it in @dependencies.yml@. 
 
-<pre>
-# Application dependencies
-
+<pre># Application dependencies
 require:
     - play
     - localsmtp -> localsmtp 0.1
@@ -36,7 +56,7 @@ repositories:
 
 For these changes to take effect you must update the depencies on the command line. 
 
-<pre>
+<pre>play dependencies modules-local/localsmtp --sync
 play dependencies --sync
 play eclipsify
 </pre>
@@ -55,12 +75,9 @@ mail.smtp.port=37536</pre>
 
 h2. Usage
 
-p(note). The advantage of this approach is the code you write to actually send the emails stays exactly the same in development and production mode, only the destination smtp server is different. 
-
-To query the emails that would have been sent visit 
+To view all collected emails visit 
 
 <pre>    http://localhost:9000/@emails</pre>
 
 h2. Tags
 
-p(note). List any tags the module provides, with an @h3.@ heading for each one. Include the tags’ arguments.
