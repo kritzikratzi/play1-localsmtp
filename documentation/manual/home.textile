@@ -27,10 +27,10 @@ h2. Features
 
 h2. Sample application
 
-p(note). Not gonna happen
-
 See the play documentation on sending mails 
 https://www.playframework.com/documentation/1.4.x/emails
+
+No further code in is needed. 
 
 h2. Getting started
 
@@ -39,6 +39,12 @@ p(note). The preferred way is to install this plugin locally in a subfolder of y
 h3. Install locally 
 
 First download the add-on and unpack it to @my-app/modules-local/localsmtp@.
+This is easy with git: 
+
+<pre>mkdir modules-local
+git submodule add https://github.com/kritzikratzi/play1-localsmtp.git modules-local/localsmtp</pre>
+
+
 Then register it in @dependencies.yml@. 
 
 <pre># Application dependencies
@@ -54,7 +60,22 @@ repositories:
             - localsmtp
 </pre>
 
-For these changes to take effect you must update the depencies on the command line. 
+And configure it in your application.conf. You can configure as you like, i prefer having a @local@ profile that stays on my machine: 
+
+<pre>mail.smtp.host=your-server.de
+mail.smtp.user=your-user  
+mail.smtp.pass=your-password
+mail.smtp.from=your-email  
+mail.smtp.channel=ssl
+
+%local.mail.smtp.host=localhost
+%local.mail.smtp.user=localsmtp
+%local.mail.smtp.pass=localsmtp
+%local.mail.smtp.port=37536
+%local.smtp.channel=</pre>
+
+
+The final step is updating the depencies on the command line. 
 
 <pre>play dependencies modules-local/localsmtp --sync
 play dependencies --sync
