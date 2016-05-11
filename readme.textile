@@ -1,0 +1,25 @@
+h1. Local SMTP
+
+p(note). Add-on for <a href="https://www.playframework.com/documentation/1.4.x/home">Play Framework 1.x</a> (this does not work with Play 2.x series!)
+
+This addon is used to start a local smtp server when running in test/dev mode that catches all outgoing email. It is based on on SubEthaSMTP. 
+
+Similar software: 
+
+- https://mailcatcher.me/ Ruby
+- https://mailtrap.io/ non-free, saas. 
+- http://smtp4dev.codeplex.com/ Windows only
+- http://quintanasoft.com/dumbster/ Java
+- https://nilhcem.github.io/FakeSMTP/ Java, also based on SubEthaSMTP
+
+h2. Features
+
+* Quick to set up
+* Writes to the filesystem, no database needed
+* Minimal UI
+* Download EML files to test your html mails in email clients without sending any mails and without configuring your mail client. 
+* Embedded. No external installation/configuration needed
+
+h2. Full documentation 
+
+For configuration & more documentation see documentation/manual/home.textile

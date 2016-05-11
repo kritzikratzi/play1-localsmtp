@@ -1,31 +1,16 @@
 package localsmtp;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
 import java.time.ZonedDateTime;
-import java.util.Enumeration;
 
-import javax.mail.Header;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.Column;
-import javax.persistence.Entity;
 
-import org.hibernate.annotations.Type;
-
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonWriter;
-
-import play.db.jpa.Model;
 import play.libs.Mail;
 
 /**

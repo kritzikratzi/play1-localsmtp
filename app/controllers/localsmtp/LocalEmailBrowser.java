@@ -29,10 +29,13 @@ import play.mvc.Controller;
  */
 public class LocalEmailBrowser extends Controller{
 
-	@Before
+	/**
+	 * This should be annotated with @Before, 
+	 * but for some reason that is not working here. 
+	 */
 	private static void checkAccess(){
 		if( !"localsmtp".equals(Play.configuration.getProperty("mail.smtp.user"))){
-			forbidden("Local email services not enabled");
+			forbidden("Local email services not enabled. ");
 		}
 		else if( Play.mode.isProd() ){
 			Logger.warn("Warning, localsmtp is accessed in prod mode. It is highly suggested to use it only for dev and test" );
@@ -40,12 +43,14 @@ public class LocalEmailBrowser extends Controller{
 	}
 	
 	public static void index(){
+		checkAccess(); 
 		LocalSmtpPlugin plugin = Play.plugin(LocalSmtpPlugin.class); 
 		List<LocalEmailMessage> emails = plugin.getRecentEmails();   
 		render(emails); 
 	}
 	
 	public static void embed( String id ){
+		checkAccess(); 
 		LocalSmtpPlugin plugin = Play.plugin(LocalSmtpPlugin.class); 
 		LocalEmailMessage email = plugin.getEmailById(id); 
 		notFoundIfNull(email);
@@ -70,6 +75,7 @@ public class LocalEmailBrowser extends Controller{
 	}
 	
 	public static void download( String id ){
+		checkAccess(); 
 		LocalSmtpPlugin plugin = Play.plugin(LocalSmtpPlugin.class); 
 		LocalEmailMessage email = plugin.getEmailById(id); 
 		notFoundIfNull(email);
@@ -83,7 +89,7 @@ public class LocalEmailBrowser extends Controller{
 	        result = message.getContent().toString();
 	    } else if (message.isMimeType("multipart/*")) {
 	        MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
-	        result = getTextFromMimeMultipart(mimeMultipart);
+	        result = getTextFromMimeMultipart(mimeMultipart) + "\n\n" + getAttachementsFromMimeMultipart(mimeMultipart);
 	    }
 	    return result;
 	}
@@ -96,7 +102,7 @@ public class LocalEmailBrowser extends Controller{
 	        BodyPart bodyPart = mimeMultipart.getBodyPart(i);
 	        if (bodyPart.isMimeType("text/plain")) {
 	            result.append(bodyPart.getContent());
-	            break; // without break same text appears twice in my tests
+	            break; // we take the first text snippet we can find
 	        } else if (bodyPart.isMimeType("text/html")) {
 	            String html = (String) bodyPart.getContent();
 	            result.append(html);
@@ -106,6 +112,26 @@ public class LocalEmailBrowser extends Controller{
 	    }
 	    return result.toString();
 	}
+	
+	private static String getAttachementsFromMimeMultipart(
+	        MimeMultipart mimeMultipart) throws MessagingException, IOException{
+	    StringBuilder result = new StringBuilder();
+	    int count = mimeMultipart.getCount();
+	    for (int i = 0; i < count; i++) {
+	        BodyPart bodyPart = mimeMultipart.getBodyPart(i);
+	        if (bodyPart.isMimeType("text/plain")) {
+	        	// skip
+	        } else if (bodyPart.isMimeType("text/html")) {
+	            // skip
+	        } else if (bodyPart.getContent() instanceof MimeMultipart){
+	            result.append(getAttachementsFromMimeMultipart((MimeMultipart)bodyPart.getContent()));
+	        } else{
+	        	result.append( "Attachement: " + bodyPart.getFileName() + "\n"); 
+	        }
+	    }
+	    return result.toString();
+	}
+	
 	
 	private static String toHtml(String text){
 		return StringEscapeUtils.escapeHtml(text); 		

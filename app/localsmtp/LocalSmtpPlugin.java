@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +15,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -34,9 +31,6 @@ import org.subethamail.smtp.server.SMTPServer;
 
 import play.Play;
 import play.PlayPlugin;
-import play.db.jpa.JPA;
-import play.db.jpa.JPAPlugin;
-import play.libs.Crypto;
 
 /**
  * Based on the 'Wiser' mail server demo, 
@@ -85,7 +79,7 @@ public class LocalSmtpPlugin extends PlayPlugin implements SimpleMessageListener
 		return true;
 	}
 
-	/** Store message in db */
+	/** Store message in filesystem */
 	public void deliver(String from, String recipient, InputStream data)
 			throws TooMuchDataException, IOException {
 		if (log.isDebugEnabled())

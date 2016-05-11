@@ -9,4 +9,4 @@
 	<span class="to"><a href="@{controllers.localsmtp.LocalEmailBrowser.download(email.id)}">eml file</a></span><br>
 	<br>
 </div>
-<div class="mail-body ${bodyClass}">${body.raw()}</div>
+<div class="mail-body ${bodyClass}"><pre>${body.raw()}</pre></div>
